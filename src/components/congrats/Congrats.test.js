@@ -37,7 +37,7 @@ describe('component/congrats', () => {
     });
 
     it("shouldn't show warning with expected props ", () => {
-        const expectedProps = { success: false };
+        const expectedProps = { success: true };
         checkProps(Congrats, expectedProps);
     });
 
