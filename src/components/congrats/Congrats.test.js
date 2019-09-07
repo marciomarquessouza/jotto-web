@@ -2,11 +2,12 @@ import React from "react";
 import Congrats from "./Congrats";
 import Enzyme, { shallow } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+import { checkProps } from "../../utils/testUtils";
 import { findByDataTest } from "../../utils/testUtils";
 
 Enzyme.configure({ adapter: new Adapter() });
 
-const defaultProps = { succes: false };
+const defaultProps = { success: false };
 
 /**
  * Factory function to create a ShallowWrapper for the Congrats component
@@ -36,6 +37,11 @@ describe('component/congrats', () => {
         const wrapper = setup({ success: true });
         const congratsText = findByDataTest(wrapper, "congrats-text");
         expect(congratsText.text().length).not.toBe(0);
+    });
+
+    it("shouldn't show warning with expected props ", () => {
+        const expectedProps = { success: false };
+        checkProps(Congrats, expectedProps);
     });
 
 });
