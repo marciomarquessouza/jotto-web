@@ -10,7 +10,8 @@ const defaultProps = {
 const mockProps = { guessedWords: [
     { word: "river", match: 2 },
     { word: "sower", match: 1 },
-    { word: "sorry", match: 2 },
+    { word: "sorry", match: 3 },
+    { word: "party", match: 5 },
 ]};
 
 /**
@@ -25,39 +26,52 @@ const setup = (props = {}) => {
     return shallow(<GuessedWords { ...setupProps }/>);
 }
 
-describe('/components/GuessedWords', () => {
+describe('Props test', () => {
     it("shouldn't throw warning with expected props ", () => {
         checkProps(GuessedWords, mockProps);
     });
+});
 
-    it('should renders GuessedWords component correctly', () => {
-        const wrapper = setup(mockProps);
-        const guessedWords = findByDataTest(wrapper, "component-guessed-words");
-        expect(guessedWords.length).toBe(1);
+describe('Tests with no guessed words props', () => {
+    let wrapper;
+
+    beforeEach(() => {
+        wrapper = setup();
     });
 
     it('should renders a specific message when no exist guessed words', () => {
-        const wrapper = setup();
         const noGuessedWords = findByDataTest(wrapper, "no-guessed-word");
         expect(noGuessedWords.length).toBe(1);
     });
 
+    it('should not renders GuessedWords component', () => {
+        const guessedWords = findByDataTest(wrapper, "component-guessed-words");
+        expect(guessedWords.length).toBe(1);
+    });
+});
+
+describe('Tests with guessed words props', () => {
+    let wrapper;
+
+    beforeEach(() => {
+        wrapper = setup(mockProps);
+    });
+
     it('should renders all guessed words received by parent component properly', () => {
-        const wrapper = setup(mockProps);
-        const guessedWordsList = findByDataTest(wrapper, "guessed-word");
-        expect(guessedWordsList.length).toBe(3);
+        const guessedWordsList = findByDataTest(wrapper, "guessed-container");
+        expect(guessedWordsList.length).toBe(mockProps.guessedWords.length);
     });
 
     it('should render each guessed word and matchs quantity properly', () => {
-        const wrapper = setup(mockProps);
-        const guessedWordsList = findByDataTest(wrapper, "guessed-word");
+        const guessedWordsList = findByDataTest(wrapper, "guessed-container");
+        expect(guessedWordsList.length).toBe(mockProps.guessedWords.length);
         guessedWordsList.forEach((node) =>{
-            const word = node.childAt(0).text();
-            const match = parseInt(node.childAt(1).text(), 10);
+            const word = findByDataTest(node, "guessed-word").text();
+            const match = findByDataTest(node, "guessed-match").text();
             expect(
                 mockProps.guessedWords.filter(
-                    (guessed) => (guessed.word === word && guessed.match === match)
-                ).length).toBe(1);
+                    (guessed) => (guessed.word === word && guessed.match.toString() === match)
+                ).length).not.toBe(0);
         })
     });
 });
