@@ -27,7 +27,7 @@ describe('component/congrats', () => {
     it('should hide congrats text when props success is false', () => {
         const wrapper = setup({ success: false });
         const congratsText = findByDataTest(wrapper, "congrats-text");
-        expect(congratsText.text()).toBe("");
+        expect(congratsText.length).toBe(0);
     });
 
     it('should render an message with props text when succes props is true', () => {

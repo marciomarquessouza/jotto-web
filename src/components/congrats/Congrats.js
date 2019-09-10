@@ -9,14 +9,16 @@ import PropTypes from "prop-types";
 */
 
 const Congrats = (props) => {
-    const congratsText = props.success ? "Congrats, you guessed the word" : null;
-    return (
-        <div data-test="component-congrats">
-            <span data-test="congrats-text">
-                { congratsText }
-            </span>
-        </div>
-    );
+    if (props.success) {
+        return (
+            <div className = "alert alert-success" data-test="component-congrats">
+                <span data-test="congrats-text">
+                    Congrats, you guessed the word
+                </span>
+            </div>
+        );
+    }
+    return <div data-test="component-congrats"/>
 };
 
 Congrats.propTypes = {
